@@ -1,14 +1,12 @@
-# coding=utf-8
-# Filename:    searcher.py
-# Author:      ZENGGUANRONG
-# Date:        2023-12-12
 # description: 核心检索器
 
-import json,requests,copy
-import numpy as np
+import copy
+
 from loguru import logger
-from src.searcher.vec_searcher.vec_searcher import VecSearcher
-from src.models.vec_model.vec_model import VectorizeModel
+
+from vec_model import VectorizeModel
+from vec_searcher import VecSearcher
+
 
 class Searcher:
     def __init__(self, model_path, vec_search_path):
@@ -28,9 +26,9 @@ class Searcher:
             rank_result.append(copy.deepcopy(rank_item))
         rank_result.sort(key=lambda x: x[3], reverse=True)
         return rank_result
-    
+
     def search(self, query, nums=3):
-        logger.info("request: {}".format(query))
+        logger.info(f"request: {query}")
 
         q_vec = self.vec_model.predict_vec(query).cpu().numpy()
 
@@ -39,8 +37,9 @@ class Searcher:
         rank_result = self.rank(query, recall_result)
         # rank_result = list(filter(lambda x:x[4] > 0.8, rank_result))
 
-        logger.info("response: {}".format(rank_result))
+        logger.info(f"response: {rank_result}")
         return rank_result
+
 
 if __name__ == "__main__":
     VEC_MODEL_PATH = "C:/work/tool/huggingface/models/simcse-chinese-roberta-wwm-ext"
