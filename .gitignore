@@ -1,10 +1,11 @@
 data/**
-logs/**
+**/logs/**
 
 **.json
 **.txt
 **.csv
 **.tsv
 **.faiss
+**.tags*
 
 **/__pycache__/**
